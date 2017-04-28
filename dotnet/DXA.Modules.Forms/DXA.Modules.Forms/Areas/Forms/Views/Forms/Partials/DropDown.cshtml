@@ -1,0 +1,51 @@
+﻿@model FormFieldModel
+
+<div class="form-group">
+    @* Add ability to control length *@
+    @{
+        Dictionary<string, object> htmlAttributes = new Dictionary<string, object>();
+        htmlAttributes.Add("class", "form-control");
+        htmlAttributes.Add("data-val", "true");
+
+        if (Model.Required == "Yes")
+        {
+            htmlAttributes.Add("data-val-required", Model.RequiredError);
+        }
+
+        List<SelectListItem> selectList = new List<SelectListItem>();
+
+        if (Model.OptionsCategoryList.Count > 0)
+        {
+            foreach (var option in Model.OptionsCategoryList)
+            {
+                selectList.Add(new SelectListItem()
+                {
+                    Text = option.DisplayText,
+                    Value = option.Value,
+                    Selected = option.Value == Model.Value
+
+                });
+            }
+        }
+        else
+        {
+            foreach (var item in Model.Options)
+            {
+                selectList.Add(new SelectListItem()
+                {
+                    Text = item,
+                    Value = item,
+                    Selected = item == Model.Value
+
+                });
+            }
+        }
+
+
+    }
+    <label for="@Model.Name">@Model.Label</label>
+    @Html.DropDownList(Model.Name, selectList, Model.Label, htmlAttributes)
+    @Html.ValidationMessageCustom(Model.Name)
+    
+</div>
+
