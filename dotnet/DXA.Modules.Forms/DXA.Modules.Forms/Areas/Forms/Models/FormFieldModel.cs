@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace DXA.Modules.Forms.Areas.Forms.Models
@@ -68,6 +69,29 @@ namespace DXA.Modules.Forms.Areas.Forms.Models
 
         [SemanticProperty(IgnoreMapping = true)]
         public List<string> Values { get; set; } = new List<string>();
+
+        public string PrintValues()
+        {
+            List<string> displayTextValues = new List<string>();
+
+            if (!string.IsNullOrEmpty(this.OptionsCategory) && this.OptionsCategoryList != null)
+            {
+                foreach (string value in Values)
+                {
+                    OptionModel option = this.OptionsCategoryList.SingleOrDefault(o => o.Value == value);
+                    if (option != null)
+                    {
+                        displayTextValues.Add(option.DisplayText);
+                    }
+                }
+
+                return string.Join(", ", displayTextValues.ToArray());
+            }
+            else
+            {
+                return string.Join(", ", this.Values.ToArray());
+            }
+        }
 
         public string Value
         {

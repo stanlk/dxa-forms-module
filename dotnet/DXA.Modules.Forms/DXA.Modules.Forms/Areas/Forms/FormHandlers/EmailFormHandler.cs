@@ -28,7 +28,6 @@ namespace DXA.Modules.Forms.Areas.Forms.FormHandlers
                 EmailPostActionModel emailPostActionModel = model as EmailPostActionModel;
 
                 SmtpClient client = new SmtpClient();
-                //client.EnableSsl = true;
 
                 MailMessage email = new MailMessage();
 
@@ -41,12 +40,12 @@ namespace DXA.Modules.Forms.Areas.Forms.FormHandlers
                 {
                     email.CC.Add(recipient);
                 }
-                // TODO: define 
+                // TODO: pass from, subject and body template as parameters
                 email.From = new MailAddress("test@test.com");
 
                 email.Subject = "DXA Module Form Data";
 
-                email.Body = GenerateEmailBody(formData);
+                email.Body = GenerateEmailBody(fields);
 
                 client.Send(email);
 
@@ -59,13 +58,13 @@ namespace DXA.Modules.Forms.Areas.Forms.FormHandlers
 
         }
 
-        public string GenerateEmailBody(NameValueCollection formData)
+        public string GenerateEmailBody(List<FormFieldModel> fields)
         {
             StringBuilder mailBuilder = new StringBuilder();
 
-            foreach (string formField in formData)
+            foreach (var field in fields)
             {
-                mailBuilder.AppendLine(string.Format("{0}: {1}", formField, formData[formField]));
+                mailBuilder.AppendLine(string.Format("{0}: {1}", field.Name, field.PrintValues()));
             }
 
             return mailBuilder.ToString();

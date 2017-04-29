@@ -49,9 +49,6 @@ namespace DXA.Modules.Forms.Areas.Forms.Controllers
                                     {
                                         formHandler.ProcessForm(Request.Form, form.FormFields, postAction);
                                     }
-
-                                    
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -123,6 +120,20 @@ namespace DXA.Modules.Forms.Areas.Forms.Controllers
 
             AjaxFormModel form = entity as AjaxFormModel;
 
+            //TODO: replace this code, get form from cache
+            foreach (var field in form.FormFields.Where(f => !string.IsNullOrEmpty(f.OptionsCategory)))
+            {
+                if (field.FieldType == FieldType.DropDown || field.FieldType == FieldType.CheckBox || field.FieldType == FieldType.RadioButton)
+                {
+
+                    List<OptionModel> options = TaxonomyProvider.LoadOptionsFromCategory(field.OptionsCategory, WebRequestContext.Localization);
+                    field.OptionsCategoryList = options;
+                }
+            }
+
+
+
+
             if (form != null)
             {
 
@@ -182,7 +193,7 @@ namespace DXA.Modules.Forms.Areas.Forms.Controllers
             return View();
         }
 
-        protected new bool MapRequestFormData(FormModel model)
+        protected new bool MapRequestFormData(BaseFormModel model)
         {
             if (Request.HttpMethod != "POST")
             {
@@ -219,8 +230,15 @@ namespace DXA.Modules.Forms.Areas.Forms.Controllers
                 
                 //string formFieldValue = Request.Form[formField];
                 List<string> formFieldValues = Request.Form.GetValues(formField).Where(f => f != "false").ToList();
-                fieldModel.Values = formFieldValues;
-                 
+                try
+                {
+                    fieldModel.Values = formFieldValues;
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug("Failed to set Model [{0}] property '{1}' to value obtained from form data: '{2}'. {3}", model.Id, fieldModel.Name, formFieldValues, ex.Message);
+                    ModelState.AddModelError(fieldModel.Name, ex.Message);
+                }
 
                 FormFieldValidator validator = new FormFieldValidator(fieldModel);
                 string validationMessage = "Field Validation Failed";
@@ -233,19 +251,6 @@ namespace DXA.Modules.Forms.Areas.Forms.Controllers
                         continue;
                     }
                 }
-
-                try
-                {
-                    // set value to real model
-                    //fieldModel.Value = formFieldValue;
-
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug("Failed to set Model [{0}] property '{1}' to value obtained from form data: '{2}'. {3}", model.Id, fieldModel.Name, fieldModel.Value, ex.Message);
-                    ModelState.AddModelError(fieldModel.Name, ex.Message);
-                }
-
             }
 
             return true;
