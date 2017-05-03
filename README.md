@@ -20,12 +20,12 @@ DXA 1.6 and SDL Web 8/8.5
 
 # Installation
 ## Content Manager (Step 1)
-1. Import DXA Forms Module package into CMS
+1. Import [DXA Forms Module package](https://github.com/stanlk/dxa-forms-module/raw/master/cms/DXAFormsModule_v1.zip) into CMS
 2. Publish **Forms** Structure Group
 3. Publish **Test Category**
 4. Republish **Publish Settings** page
 ## Web Application (Step 2)
-1. Unzip DXA Forms into your web application
+1. Unzip [DXA Forms Module Web](https://github.com/stanlk/dxa-forms-module/raw/master/dotnet/compiled/DXAFormsModuleWeb_v1.zip) into your web application
 2. Configure web.config
  * Add next sections and configure smtp server credentials
 ```
