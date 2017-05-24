@@ -20,18 +20,5 @@ namespace DXA.Modules.Forms.Areas.Forms.FormHandlers
             formHandlers.TryGetValue(name, out formHandler);
             return formHandler;
         }
-
-        //public static IFormHandler Get(Type formHandlerType)
-        //{
-        //    foreach (var formHandler in formHandlers.Values)
-        //    {
-        //        if (formHandler.GetType() == formHandlerType)
-        //        {
-        //            return formHandler;
-        //        }
-        //    }
-        //    return null;
-        //}
-
     }
 }
