@@ -248,6 +248,7 @@
     <Compile Include="Areas\Forms\FormHandlers\EmailFormHandler.cs" />
     <Compile Include="Areas\Forms\FormHandlers\FormHandlerRegistry.cs" />
     <Compile Include="Areas\Forms\FormHandlers\IFormHandler.cs" />
+    <Compile Include="Areas\Forms\FormHandlers\SalesforceHandler.cs" />
     <Compile Include="Areas\Forms\FormsAreaRegistration.cs" />
     <Compile Include="Areas\Forms\HtmlHelpers\FormValidationExtensions.cs" />
     <Compile Include="Areas\Forms\Models\AjaxFormModel.cs" />

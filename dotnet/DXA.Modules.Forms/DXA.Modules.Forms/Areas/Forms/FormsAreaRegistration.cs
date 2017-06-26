@@ -33,6 +33,8 @@ namespace DXA.Modules.Forms.Areas.Forms
 
             FormHandlerRegistry.RegisterFormHandler(new EmailFormHandler());
             FormHandlerRegistry.RegisterFormHandler(new AudienceManagerHandler());
+            FormHandlerRegistry.RegisterFormHandler(new SalesforceHandler());
+
         }
     }
 }
